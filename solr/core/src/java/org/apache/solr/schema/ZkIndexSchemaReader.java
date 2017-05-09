@@ -60,9 +60,7 @@ public class ZkIndexSchemaReader implements OnReconnect {
         CoreContainer cc = core.getCoreDescriptor().getCoreContainer();
         if (cc.isZooKeeperAware()) {
           log.debug("Removing ZkIndexSchemaReader OnReconnect listener as core "+core.getName()+" is shutting down.");
-          if (schemaWatcher != null) {
-            schemaWatcher.stopWatching();
-          }
+          schemaWatcher.stopWatching();
           cc.getZkController().removeOnReconnectListener(ZkIndexSchemaReader.this);
         }
       }
@@ -190,10 +188,8 @@ public class ZkIndexSchemaReader implements OnReconnect {
   @Override
   public void command() {
     try {
-      // setup a new watcher to get notified when the managed schema changes
-      createSchemaWatcher();
       // force update now as the schema may have changed while our zk session was expired
-      updateSchema(null, -1);
+      updateSchema(schemaWatcher, -1);
     } catch (Exception exc) {
       log.error("Failed to update managed-schema watcher after session expiration due to: "+exc, exc);
     }
