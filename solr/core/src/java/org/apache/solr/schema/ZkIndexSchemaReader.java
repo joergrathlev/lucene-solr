@@ -159,7 +159,7 @@ public class ZkIndexSchemaReader implements OnReconnect {
     return managedIndexSchemaFactory.getSchema();
   }
 
-  private void updateSchema(Watcher watcher, int expectedZkVersion) throws KeeperException, InterruptedException {
+  void updateSchema(Watcher watcher, int expectedZkVersion) throws KeeperException, InterruptedException {
     Stat stat = new Stat();
     synchronized (getSchemaUpdateLock()) {
       final ManagedIndexSchema oldSchema = managedIndexSchemaFactory.getSchema();
